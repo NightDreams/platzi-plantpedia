@@ -1,9 +1,39 @@
+import { useEffect } from 'react'
 import { Grid } from '@ui/Grid'
 import { Button } from '@ui/Button'
 import { Typography } from '@ui/Typography'
 import { Layout } from '@components/Layout'
 
+const contentfullUrl = `https://graphql.contentful.com/content/v1/spaces/${process.env.NEXT_PUBLIC_SPACE_ID}`
+
+const fetchPlants = () =>
+fetch(contentfullUrl, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
+    },
+    body: JSON.stringify({
+      query: `{
+        plantCollection (limit:10){
+          total
+          limit
+          items{
+            plantName
+          }
+        }
+      }`
+    })
+  },
+  )
+
 export default function Home() {
+  useEffect(() => {
+    fetchPlants().then(response => response.json()).then((data) => {
+        console.log( data)
+      })
+  }, [])
+
   return (
     <Layout>
       <Typography variant="h2" className="text-center">
@@ -17,7 +47,7 @@ export default function Home() {
                 href={doc.link}
                 target="_blank"
                 title={doc.title}
-                className="p-4 border-2 border-gray-300 block hover:border-green-500 transition transition-colors duration-500"
+                className="p-4 border-2 border-gray-300 block hover:border-green-500 transition  duration-500"
               >
                 <Typography variant="h5" className="mb-2">
                   {doc.title}
