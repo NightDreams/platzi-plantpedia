@@ -1,8 +1,6 @@
-// import { useState, useEffect } from 'react'
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 
-import { getPlant, QueryStatus } from '@api'
+import { getPlant, getPlantList } from '@api'
 import { Layout } from "@components/Layout";
 import { RichText } from "@components/RichText";
 import { AuthorCard } from "@components/AuthorCard";
@@ -10,47 +8,59 @@ import { AuthorCard } from "@components/AuthorCard";
 import { Typography } from "@ui/Typography";
 import { Grid } from "@ui/Grid";
 
+type PathType = {
+  params: {
+    slug: string
+  }
+}
+export const getStaticPaths = async () => {
+  const entries = await getPlantList({ limit: 10 })
 
-export default function PlantEntryPage() {
-  const [status, setStatus] = useState<QueryStatus>('idle')
-  const [plant, setPLant] = useState<Plant | null>(null)
+  const paths: PathType[] = entries.map((plant) => ({
+    params: { slug: plant.slug }
+  }));
 
-  const router = useRouter()
-  const slug = router.query.slug
 
-  useEffect(() => {
-    if (typeof slug !== 'string') {
-      return
+  return {
+    paths,
+    fallback: false,
+  }
+}
+
+type PlantEntryProps = {
+  plant: Plant
+}
+
+/* Alimentacion de la pagina -  Props de la pagina */
+export const getStaticProps: GetStaticProps<PlantEntryProps> = async ({ params }) => {
+  const slug = params?.slug
+  if (typeof slug !== 'string') {
+    return {
+      notFound: true
     }
-    setStatus('loading')
-    getPlant(slug).then((receivedData) => setPLant(receivedData)).catch(() => { setStatus('error') })
-  }, [slug])
-  /* comprobaciones */
-  if (status === 'loading' || 'idle') {
-    return (
-      <Layout>
-        <main>
-          Loading awesomeness..
-        </main>
-      </Layout>
-    )
   }
-  if (plant == null || status === 'error') {
-    return (
-      <Layout>
-        <main>
-          Loading awesomeness..
-        </main>
-      </Layout>
-    )
-  }
+  try {
+    const plant = await getPlant(slug)
+    return {
+      props: {
+        plant
+      }
+    }
 
+  } catch (e) {
+    return {
+      notFound: true
+    }
+  }
+}
+
+export default function PlantEntryPage({ plant }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <Layout>
       <Grid container spacing={4}>
         <Grid item xs={12} md={8} lg={9} component="article">
           <figure>
-            <img with={952} src={plant.image.url} alt={plant.image.title} />
+            <img width={952} src={plant.image.url} alt={plant.image.title} />
           </figure>
           <div className="px-12 pt-8">
             <Typography variant="h2">{plant.plantName}</Typography>
