@@ -1,3 +1,5 @@
+import fs from 'fs'
+import path from 'path'
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Link from 'next/link'
 import { useRouter } from "next/router";
@@ -17,16 +19,20 @@ type PathType = {
   }
 }
 export const getStaticPaths = async () => {
-  const entries = await getPlantList({ limit: 10 })
 
-  const paths: PathType[] = entries.map((plant) => ({
-    params: { slug: plant.slug }
+  const plantEntriesFromFS = fs
+    .readFileSync(path.join(process.cwd(), 'paths.txt'), 'utf8')
+    .toString()
+  const plantEntriesToGnerate = plantEntriesFromFS.split('\n').filter(Boolean)
+  console.log(plantEntriesToGnerate)
+  const paths: PathType[] = plantEntriesToGnerate.map((slug) => ({
+    params: { slug }
   }));
 
 
   return {
     paths,
-    fallback: true,
+    fallback: false,
   }
 }
 
