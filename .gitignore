@@ -33,6 +33,5 @@ yarn-error.log*
 # vercel
 .vercel
 # import assets
-/import/
-config.json
 contentful-platzipedia.json
+import/config.json
