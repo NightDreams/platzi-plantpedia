@@ -3,9 +3,7 @@ import Link from 'next/link'
 import { Grid, GridProps } from '@ui/Grid'
 import { Typography } from '@ui/Typography'
 import { Button } from '@ui/Button'
-
 import { Excerpt } from '@components/Excerpt'
-import { Image } from '@components/Image'
 
 type PlantCollectionProps = {
   plants: Plant[]
