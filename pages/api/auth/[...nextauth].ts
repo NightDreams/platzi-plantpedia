@@ -11,9 +11,6 @@ const options: NextAuthOptions = {
     brandColor: '', // Hex color code
     logo: '', // Absolute URL to image
   },
-  debug: true,
-  session: {},
-  jwt: {},
   providers: [
     CredentialsProvider({
       name: 'Platzi',
@@ -49,5 +46,11 @@ const options: NextAuthOptions = {
       clientSecret: process.env.TWITCH_CLIENT_SECRET,
     }),
   ],
+  debug: process.env.NODE_ENV == 'development',
+  secret: process.env.AUTH_SECRET,
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    maxAge: 60 * 60 * 24 * 30,
+  },
 }
 export default NextAuth(options)
