@@ -50,7 +50,7 @@ const options: NextAuthOptions = {
   secret: process.env.AUTH_SECRET,
   jwt: {
     secret: process.env.JWT_SECRET,
-    maxAge: 60 * 60 * 24 * 30,
+    maxAge: 60 * 60 * 24 * 30, //30 days
   },
 }
 export default NextAuth(options)

@@ -22,6 +22,7 @@
       "@ui/*": ["ui/*"],
       "@api/*": ["api/*"],
       "@api": ["api/index.ts"],
+      "@auth/*": ["auth/*"],
       "@components/*": ["components/*"]
     }
   },
