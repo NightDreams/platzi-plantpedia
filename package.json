@@ -23,7 +23,8 @@
     "next-auth": "^3.26.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-query": "^3.17.0"
+    "react-query": "^3.17.0",
+    "sanitize-html": "^2.7.0"
   },
   "devDependencies": {
     "@apollo/client": "^3.3.20",
@@ -39,6 +40,7 @@
     "@types/cookie": "^0.4.0",
     "@types/lodash": "^4.14.170",
     "@types/react": "^17.0.11",
+    "@types/sanitize-html": "^2.6.2",
     "autoprefixer": "^10.2.6",
     "clsx": "^1.1.1",
     "graphql": "^15.5.0",
