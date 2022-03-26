@@ -7,7 +7,7 @@ import { Typography } from '@ui/Typography'
 import { Layout } from '@components/Layout'
 import { Comment, CommentProps } from '@components/Wall/Comment'
 import { Editor } from '@components/Wall/Editor'
-
+import { AccessDenied } from '@components/AccessDenied'
 import { getSession, useSession } from '@auth/client'
 
 export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
@@ -34,6 +34,10 @@ export default function WallPage() {
   const [session] = useSession()
   const [stories, setStories] = useState<Story[]>([])
   const { t } = useTranslation(['page-wall'])
+
+  if (session == null) {
+    return <AccessDenied> </AccessDenied>
+  }
 
   const addStory = (text: string) => {
     const message = text.trim()
