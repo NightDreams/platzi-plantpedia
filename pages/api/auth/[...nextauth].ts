@@ -14,7 +14,12 @@ const options: NextAuthOptions = {
     jwt: true,
     maxAge: 60 * 15,
   },
-  jwt: {},
+  jwt: {
+    secret: process.env.AUTH_JWT_SECRET,
+    signingKey: process.env.AUTH_JWT_SIGNING_KEY,
+    encryption: true,
+    encryptionKey: process.env.AUTH_JWT_ENCRYPTION_KEY,
+  },
   providers: [
     Providers.Credentials({
       name: 'Platzi',
